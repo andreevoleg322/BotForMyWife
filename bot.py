@@ -1,9 +1,9 @@
 from telegram import Bot
 from telegram.ext import Updater
+from telegram.ext import CommandHandler
 from apscheduler.schedulers.background import BackgroundScheduler
-import time
-
 from messages import RandomMessages, NoticeMessages
+import time
 
 # Токен вашего бота (замените на свой)
 TOKEN = "7461717869:AAG_Z6t397efULdJh8Z4AUxgm1DUyX94CpU"
@@ -16,7 +16,14 @@ msg_generator = RandomMessages()
 notice = NoticeMessages()
 updater = Updater(token=TOKEN, use_context=True)
 
-# Функция для отправки сообщения
+def start(update, context):
+    update.message.reply_text(
+        "Привет, любимая!\n"
+        "Я буду присылать тебе приятные сообщения и напоминания.\n"
+    )
+
+updater.dispatcher.add_handler(CommandHandler("start", start))
+# Функции для отправки сообщения
 def send_morning_message():
     message = msg_generator.get_random_morning_message()
     bot.send_message(chat_id=CHAT_ID, text=message)
